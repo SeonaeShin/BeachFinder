@@ -82,4 +82,9 @@ class DashboardFragment : Fragment() {
 //
 //        return rootView
 //    }
+
+    override fun onStart() {
+        Log.d("DashBoardfragment", "onStart")
+        super.onStart()
+    }
 }

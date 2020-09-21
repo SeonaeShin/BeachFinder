@@ -1,5 +1,6 @@
 package com.example.beachfinder
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -9,6 +10,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.beachfinder.ui.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,21 +35,25 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment){
     val fragmentManager = supportFragmentManager
     val transaction = fragmentManager.beginTransaction()
 
-//    transaction.replace(R.id.nav_host_fragment,fragment)
-     transaction.replace(R.id.mapView,fragment)
+    transaction.add(R.id.nav_host_fragment,fragment)
+//     transaction.add(R.id.nav_host_fragment,fragment)
+     Log.d("R.id.mapView >>", "${R.id.mapView}")
+//    transaction.replace(R.id.mapView,fragment)
+//     transaction.add(R.id.mapView,fragment)
     transaction.addToBackStack(null)
     transaction.commit()
 }
 
 
 fun AppCompatActivity.finishFragment(fragment: Fragment){
-    Log.d("0000","00")
+    Log.d("MainActivity","finish")
     val fragmentManager = supportFragmentManager
     val transaction = fragmentManager.beginTransaction()
-
+    Log.d("MainActivity","${transaction}")
     transaction.remove(fragment)
     transaction.commit()
-}
+    Log.d("MainActivity","${transaction}")
 
+}
 
 
