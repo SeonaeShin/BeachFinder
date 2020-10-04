@@ -12,18 +12,27 @@ class DBHelper(
     version: Int
 ) : SQLiteOpenHelper(context, name, factory, version) {
 
-
     override fun onCreate(db: SQLiteDatabase) {
         var sql : String =  "CREATE TABLE mytable (" +
-                "_id integer primary key autoincrement," +
-                "name text," +
-                "addr text);";
+//                "_id integer primary key autoincrement," +
+                "beach_id integer primary key," +
+                "sido_nm text," +
+                "gugun_nm text," +
+                "sta_nm text," +
+                "beach_wid text," +
+                "beach_len text," +
+                "beach_knd text," +
+                "link_addr text," +
+                "link_nm text," +
+                "link_tel text," +
+                "lat integer," +
+                "lon integer);"
 
-        Log.d("hhhh","create try ");
+        Log.d("sql create >","create try ");
 
         db.execSQL(sql)
 
-        Log.d("hhhh","create success ");
+        Log.d("sql create >","create success ");
 
     }
 

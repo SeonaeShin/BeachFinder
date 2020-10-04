@@ -18,11 +18,6 @@ import org.json.JSONObject
 
 
 // TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
 /**
  * A simple [Fragment] subclass.
  * Use the [BeachDetails.newInstance] factory method to
@@ -32,6 +27,17 @@ class BeachDetails : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var param3: String? = null
+    private var param4: String? = null
+    private var param5: String? = null
+    private var param6: String? = null
+    private var param7: String? = null
+    private var param8: String? = null
+    private var param9: String? = null
+    private var param10: String? = null
+    private var param11: String? = null
+    private var param12: String? = null
+
 
     lateinit var dbHelper : DBHelper
     lateinit var database : SQLiteDatabase
@@ -44,7 +50,7 @@ class BeachDetails : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        Log.d("beachdetail", "beachdetail")
         super.onCreate(savedInstanceState)
 
         //sql
@@ -56,50 +62,70 @@ class BeachDetails : Fragment() {
         }
 
         arguments?.let {
-            param1 = it.getString("passBName") //이름
-            param2 = it.getString("passBAdd") //주소
 
-            Log.d("arguments in", "${param1}, ${param2}")
+            param1 = it.getString("pBeach_id") //아이디
+            param2 = it.getString("pSido_nm") //시도
+            param3 = it.getString("pGugun_nm") //구군
+            param4 = it.getString("pSta_nm") //해변
+            param5 = it.getString("pBeach_wid") //폭
+            param6 = it.getString("pBeach_len") //길이
+            param7 = it.getString("pBeach_knd") //해변종류
+            param8 = it.getString("pLink_addr") //링크주소
+            param9 = it.getString("pLink_nm") //링크이름
+            param10 = it.getString("pLink_tel") //링크전화화
+            param11 = it.getString("pLat") //위도
+            param12 = it.getString("pLon") //경도
+
+            Log.d("arguments in", "${param1}, ${param2},${param3}, ${param4},${param5}, ${param6},${param7}, ${param8},${param9}, ${param10},${param11}, ${param12}")
         }
         rootView = inflater.inflate(R.layout.fragment_beach_details, container, false)
 
+        //title card
         val pName: TextView = rootView.findViewById(R.id.pName)
         val pAdd: TextView = rootView.findViewById(R.id.pAdd)
+        //detail card
+        val txtWid: TextView = rootView.findViewById(R.id.txt_wid)
+        val txtLen: TextView = rootView.findViewById(R.id.txt_len)
+        val txtKnd: TextView = rootView.findViewById(R.id.txt_knd)
+        val txtLkAddr: TextView = rootView.findViewById(R.id.txt_addr)
+        val txtLkNm: TextView = rootView.findViewById(R.id.txt_lknm)
+        val txtLkTel: TextView = rootView.findViewById(R.id.txt_lktel)
+        val txtLatLon: TextView = rootView.findViewById(R.id.txt_latlon)
 
-        pName.setText(param1)
-        pAdd.setText(param2)
+        //title card
+        pName.setText(param4+" 해변")
+        pAdd.setText(param2+" "+ param3)
+        //detail card
+        if (param5 == "null")   txtWid.setText("정보없음") else txtWid.setText(param5)
+        if (param6 == "null")   txtLen.setText("정보없음") else txtLen.setText(param6)
+        if (param7 == "null")   txtKnd.setText("정보없음") else txtKnd.setText(param7)
+        txtLkAddr.setText(param8)
+        txtLkNm.setText(param9)
+        txtLkTel.setText(param10)
+        txtLatLon.setText("("+param11+", "+param12+")")
 
         var buttonX   = rootView.findViewById<View>(R.id.buttonX) as Button
         var buttonFav = rootView.findViewById<View>(R.id.buttonFav) as Button
         var buttonChk = rootView.findViewById<View>(R.id.buttonChk) as Button
         var buttonFvRemove = rootView.findViewById<View>(R.id.buttonFvRemove) as Button
 
-        val sName = "sName"
-        val sAdd = "sAdd"
-
         //종료 버튼 눌렀을 때 핸들링
         buttonX.setOnClickListener{
             val context = activity as AppCompatActivity
-            context.onBackPressed()
+//            context.onBackPressed()
+            context.finishFragment(this)
         }
 
         //즐겨찾기 버튼 눌렀을 때 핸들링
         buttonFav.setOnClickListener{
         try{
-            var query = "INSERT INTO mytable('name', 'addr') values('${param1}', '${param2}');"
+//            var query = "INSERT INTO mytable('name', 'addr') values('${param1}', '${param2}');"
+            var query = "INSERT INTO mytable values('${param1}','${param2}','${param3}','${param4}','${param5}','${param6}','${param7}','${param8}','${param9}','${param10}','${param11}','${param12}');"
             database.execSQL(query)
         }
         catch(e: Exception) {
-            Log.d("", "ok")
+            Log.d("SQL Insert", "ok")
         }
-
-//            var myJSONObject = JSONObject()
-//            myJSONObject.put("name","양양" + "${numb}")
-//            myJSONObject.put("add","강원도양양시" + "${numb}")
-//            val myString: String = myJSONObject.toString()
-//
-//            preference?.edit()?.putString("양양", myString)?.apply()
-//            preference?.edit()?.commit();
 
             numb++
 
@@ -110,38 +136,24 @@ class BeachDetails : Fragment() {
             var query = "SELECT * FROM mytable;"
             var c = database.rawQuery(query,null)
             while(c.moveToNext()){
-                System.out.println("my table : "+c.getString(c.getColumnIndex("name"))+",  "+c.getString(c.getColumnIndex("addr")));
+                Log.d("table>", c.getString(c.getColumnIndex("beach_id"))+", "+c.getString(c.getColumnIndex("sido_nm"))+", "
+                    +c.getString(c.getColumnIndex("gugun_nm"))+", "+c.getString(c.getColumnIndex("sta_nm"))+", "
+                        +c.getString(c.getColumnIndex("beach_wid"))+", "+c.getString(c.getColumnIndex("beach_len"))+", "
+                        +c.getString(c.getColumnIndex("beach_knd"))+", "+c.getString(c.getColumnIndex("link_addr"))+", "
+                        +c.getString(c.getColumnIndex("link_nm"))+", "+c.getString(c.getColumnIndex("link_tel"))+", "
+                        +c.getString(c.getColumnIndex("lat"))+", "+c.getString(c.getColumnIndex("lon")))
             }
         }
 
         buttonFvRemove.setOnClickListener{
 
             var arr : Array<String> = arrayOf("${param1}")
-//            database.delete("mytable","txt=? AND _id=?",arr)
-            database.delete("mytable","name=?",arr)
+//          database.delete("mytable","txt=? AND _id=?",arr)
+            database.delete("mytable","beach_id=?",arr)
         }
 
         return rootView
     }
-//    companion object {
-//        /**
-//         * Use this factory method to create a new instance of
-//         * this fragment using the provided parameters.
-//         *
-//         * @param param1 Parameter 1.
-//         * @param param2 Parameter 2.
-//         * @return A new instance of fragment BeachDetails.
-//         */
-//        // TODO: Rename and change types and number of parameters
-//        @JvmStatic
-//        fun newInstance(param1: String, param2: String) =
-//            BeachDetails().apply {
-//                arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
-//                }
-//            }
-//    }
 
     override fun onStart() {
         Log.d("beach detail", "beach detail on start!")

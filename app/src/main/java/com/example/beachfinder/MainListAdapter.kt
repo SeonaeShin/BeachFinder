@@ -13,13 +13,13 @@ class MainListAdapter(val context: Context, val beachList: ArrayList<Favorites>)
         val view: View = LayoutInflater.from(context).inflate(R.layout.listview_item, null)
 
         /* 위에서 생성된 view를 res-layout-listivew_item.xml 파일의 각 View와 연결하는 과정이다. */
-        val beachName = view.findViewById<TextView>(R.id.beachName)
-        val beachAdd = view.findViewById<TextView>(R.id.beachAdd)
+        val tTitle = view.findViewById<TextView>(R.id.tTitle)
+        val tExplains = view.findViewById<TextView>(R.id.tExplains)
 
         /* ArrayList<Dog>의 변수 dog의 이미지와 데이터를 ImageView와 TextView에 담는다. */
         val beach = beachList[position]
-        beachName.text = beach.beachName
-        beachAdd.text = beach.beachAdd
+        tTitle.text = beach.beachName
+        tExplains.text = beach.beachAdd
 
         return view
     }

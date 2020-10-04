@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.beachfinder.*
@@ -52,10 +53,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     // JsonObject 를 키로 MyItem 객체를 저장할 맵
     val itemMap = mutableMapOf<JSONObject, MyItem>()
 
-
+    //mapview 선언
     private lateinit var mapView: MapView
-
-//    val context = activity as AppCompatActivity
+    //progress bar 선언
+    private lateinit var progressBar: ProgressBar
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +64,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         // Inflate the layout for this fragment
         var rootView = inflater.inflate(R.layout.fragment_home, container, false)
+
+        progressBar = rootView.findViewById(R.id.progress_Bar) as ProgressBar
+        //progress bar 보여지기 시작
+        progressBar.visibility = View.VISIBLE
 
         mapView = rootView.findViewById(R.id.mapView) as MapView
         mapView.onCreate(savedInstanceState)
@@ -111,6 +116,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                 }
 
             } while (false)
+
+
+
             return "complete"
         }
 
@@ -188,15 +196,14 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     LatLng(lat, lon), title, snippet, BitmapDescriptorFactory.fromBitmap(bitmap)
                 )
             )
-
             // 아이템맵에 beach 객체를 키로 MyItem 객체 저장
             itemMap.put(beach, item)
-
         } catch ( e: JSONException ){
             Log.d("error occurs",   "${beach}}")
             return false
         }
-
+        //progress bar 보여지기 시작
+        progressBar.visibility = View.GONE
         return true
     }
 
@@ -230,8 +237,18 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
                     {
                         Log.d("success!","${sta_nm}, ${it.title}, ${it.snippet}")
                         // Send string data as key value format
-                        args.putString("passBName", beaches.getJSONObject(i).getString("sta_nm"))
-                        args.putString("passBAdd", beaches.getJSONObject(i).getString("gugun_nm"))
+                        args.putString("pBeach_id", beaches.getJSONObject(i).getString("beach_id"))
+                        args.putString("pSido_nm", beaches.getJSONObject(i).getString("sido_nm"))
+                        args.putString("pGugun_nm", beaches.getJSONObject(i).getString("gugun_nm"))
+                        args.putString("pSta_nm", beaches.getJSONObject(i).getString("sta_nm"))
+                        args.putString("pBeach_wid", beaches.getJSONObject(i).getString("beach_wid"))
+                        args.putString("pBeach_len", beaches.getJSONObject(i).getString("beach_len"))
+                        args.putString("pBeach_knd", beaches.getJSONObject(i).getString("beach_knd"))
+                        args.putString("pLink_addr", beaches.getJSONObject(i).getString("link_addr"))
+                        args.putString("pLink_nm", beaches.getJSONObject(i).getString("link_nm"))
+                        args.putString("pLink_tel", beaches.getJSONObject(i).getString("link_tel"))
+                        args.putString("pLat", beaches.getJSONObject(i).getString("lat"))
+                        args.putString("pLon", beaches.getJSONObject(i).getString("lon"))
                         break
                     }
                 }
@@ -242,7 +259,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
                 context.replaceFragment(fragment)
 
-//                searchBar.visibility = View.GONE
+//              searchBar.visibility = View.GONE
 
                 Log.d("HomeFragment", "searchBar22 status> ${searchBar.visibility}")
 
@@ -307,7 +324,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onResume() {
-
         Log.d("====Map===", "onResume")
         super.onResume()
         mapView.onResume()
@@ -315,16 +331,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onPause() {
         Log.d("====Map===", "onPause")
-
-//
-//        val fragmentManager = supportFragmentManager
-//        val transaction = fragmentManager.beginTransaction()
-//
-//        transaction.remove(fragment)
-//        transaction.addToBackStack(null)
-//        transaction.commit()
         super.onPause()
-
+        //progress bar 보여지기 시작
+        progressBar.visibility = View.VISIBLE
         mapView.onPause()
 
     }
@@ -347,7 +356,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mapView.onDestroy()
         super.onDestroy()
     }
-
 
     //맵 위에 핀으로 사용할 비트맵
     val bitmap by lazy {
@@ -373,8 +381,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val data = connection.getInputStream().readBytes().toString(charset("UTF-8"))
 
         Log.d("readData finish:data", "${data}")
+
         return JSONObject(data)
     }
-
-
 }
