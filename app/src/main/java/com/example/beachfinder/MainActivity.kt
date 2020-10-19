@@ -2,6 +2,8 @@ package com.example.beachfinder
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -9,7 +11,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.beachfinder.ui.dashboard.context
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.detail_title.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,7 +33,11 @@ class MainActivity : AppCompatActivity() {
         //Actionbar 숨기기
         getSupportActionBar()?.hide()
     }
+
+
 }
+
+
 
  //Extension function to replace fragment
 fun AppCompatActivity.replaceFragment(fragment: Fragment){
@@ -44,10 +52,10 @@ fun AppCompatActivity.replaceFragment(fragment: Fragment){
          val ft: FragmentTransaction = supportFragmentManager
              .beginTransaction()
          ft.replace(R.id.nav_host_fragment, fragment)
+         ft.addToBackStack(null)
          ft.commit()
      }
 //    transaction.commitAllowingStateLoss()
-
 }
 
 

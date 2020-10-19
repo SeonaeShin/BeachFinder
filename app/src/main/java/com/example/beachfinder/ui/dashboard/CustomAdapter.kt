@@ -7,15 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.beachfinder.BeachDetails
-import com.example.beachfinder.MainActivity
-import com.example.beachfinder.R
-import com.example.beachfinder.replaceFragment
+import com.example.beachfinder.*
 import com.example.beachfinder.ui.dashboard.DashboardFragment
+import com.google.android.gms.maps.model.Dash
 
 
 /**
@@ -37,6 +36,7 @@ private var lon: String? = null
 // Pass data to fragment
 val args = Bundle()
 val context = MainActivity() as AppCompatActivity
+val dashboard = DashboardFragment()
 
 
 class CustomAdapter(private val binfos: ArrayList<BInfo>) :
@@ -62,8 +62,6 @@ class CustomAdapter(private val binfos: ArrayList<BInfo>) :
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder{
         // Create a new view.
 
-
-
         val v = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.text_row_item, viewGroup, false)
 
@@ -84,12 +82,13 @@ class CustomAdapter(private val binfos: ArrayList<BInfo>) :
             args.putString("pLon", lon)
 
 
+/* temp temp
             val fragment = BeachDetails()
 
             fragment.arguments = args
 
             context.replaceFragment(fragment)
-
+*/
         }
 
         return ViewHolder(v)
@@ -126,3 +125,9 @@ class CustomAdapter(private val binfos: ArrayList<BInfo>) :
         private val TAG = "CustomAdapter"
     }
 }
+
+
+
+/*
+
+ */

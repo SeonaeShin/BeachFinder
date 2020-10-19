@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.beachfinder.DBHelper
 import com.example.beachfinder.Favorites
 import com.example.beachfinder.R
+import kotlinx.android.synthetic.main.detail_title.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Objects.isNull
@@ -174,22 +177,40 @@ class DashboardFragment : Fragment() {
             binfos.add(binfo)
         }
 
-/*
-
-sql
-name add link linkadd
 
 
- */
+    }
 
-//        //확인
-//        for (i in 0 until aJsonArray.length()) {
-//            Log.d("Loop jsonarray name:", "${aJsonArray.getJSONObject("name")}")
-//            Log.d("Loop jsonarray addr:", "${aJsonArray.getJSONObject("addr")}")
-//            // Your code here
-//
-//        }
+    fun showReadDialog() {
 
+        val dialogReadView = layoutInflater.inflate(R.layout.detail_popup, null)
+        val title = layoutInflater.inflate(R.layout.detail_title, null)
+        title.title.text = "글읽기"
+
+        val builder = AlertDialog.Builder(com.example.beachfinder.ui.dashboard.context!!, android.R.style.Theme_Material_Light_NoActionBar)
+            .setView(dialogReadView)
+            .setCustomTitle(title)
+            .setPositiveButton("확인", null)
+            .setNeutralButton("닫기", null)
+            .create()
+
+
+        builder.setOnDismissListener {
+        }
+        builder.setOnShowListener {
+            val buttonPositive: Button = builder.getButton(AlertDialog.BUTTON_POSITIVE)
+            val buttonNeutral: Button = builder.getButton(AlertDialog.BUTTON_NEUTRAL)
+
+
+            buttonNeutral.setOnClickListener {
+
+            }
+
+            buttonPositive.setOnClickListener {
+
+            }
+        }
+        builder.show()
     }
 
     override fun onStart() {
@@ -201,3 +222,5 @@ name add link linkadd
         private val DATASET_COUNT = 10
     }
 }
+
+
