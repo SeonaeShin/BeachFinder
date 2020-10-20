@@ -89,6 +89,7 @@ class CustomAdapter(private val binfos: ArrayList<BInfo>) :
 
             context.replaceFragment(fragment)
 */
+            dashboard.showReadDialog()
         }
 
         return ViewHolder(v)

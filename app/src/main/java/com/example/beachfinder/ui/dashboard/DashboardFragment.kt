@@ -8,8 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.Constraints.TAG
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,6 +21,8 @@ import com.example.beachfinder.DBHelper
 import com.example.beachfinder.Favorites
 import com.example.beachfinder.R
 import kotlinx.android.synthetic.main.detail_title.view.*
+import kotlinx.android.synthetic.main.text_row_item.*
+import kotlinx.android.synthetic.main.text_row_item.view.*
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Objects.isNull
@@ -36,6 +41,22 @@ class BInfo {
     var blat:String = ""
     var blon:String = ""
 }
+
+/**
+* Provide views to RecyclerView with data from binfos.
+*/
+private var beach_id: String? = null
+private var sido_nm: String? = null
+private var gugun_nm: String? = null
+private var sta_nm: String? = null
+private var beach_wid: String? = null
+private var beach_len: String? = null
+private var beach_knd: String? = null
+private var link_addr: String? = null
+private var link_nm: String? = null
+private var link_tel: String? = null
+private var lat: String? = null
+private var lon: String? = null
 
 class DashboardFragment : Fragment() {
 
@@ -80,7 +101,7 @@ class DashboardFragment : Fragment() {
         // Set CustomAdapter as the adapter for RecyclerView.
 //        recyclerView.adapter = CustomAdapter(dataset2)
 
-        recyclerView.adapter = CustomAdapter( binfos)
+        recyclerView.adapter = FavRecyclerViewAdapter()
 
         return rootView
 
@@ -187,7 +208,7 @@ class DashboardFragment : Fragment() {
         val title = layoutInflater.inflate(R.layout.detail_title, null)
         title.title.text = "글읽기"
 
-        val builder = AlertDialog.Builder(com.example.beachfinder.ui.dashboard.context!!, android.R.style.Theme_Material_Light_NoActionBar)
+        val builder = AlertDialog.Builder(context!!, android.R.style.Theme_Material_Light_NoActionBar)
             .setView(dialogReadView)
             .setCustomTitle(title)
             .setPositiveButton("확인", null)
@@ -211,6 +232,36 @@ class DashboardFragment : Fragment() {
             }
         }
         builder.show()
+    }
+
+    inner class FavRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        init {
+            Log.d("FavRecylcerViewAdapter", "FavRecylcerViewAdapter init")
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder{
+
+            return CustomViewHolder(tTitle, tDetail )
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+
+            binfos[position].let { item ->
+                with(holder) {
+                    tTitle.text = item.staNm
+                    tDetail.text = item.sidoNm
+                }
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return 0
+        }
+        // RecyclerView Adapter - View Holder
+        inner class CustomViewHolder(var tTitle: TextView, var tDetail: TextView) : RecyclerView.ViewHolder(tTitle,tDetail)
+
     }
 
     override fun onStart() {
