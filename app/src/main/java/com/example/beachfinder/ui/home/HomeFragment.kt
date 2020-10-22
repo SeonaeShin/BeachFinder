@@ -12,12 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.beachfinder.*
-import com.example.beachfinder.ui.notifications.NotificationsFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -262,7 +260,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 //              searchBar.visibility = View.GONE
 
                 Log.d("HomeFragment", "searchBar22 status> ${searchBar.visibility}")
-
             }
             // 현재위치로 카메라 이동
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(34.315187, 126.518598), 17f))

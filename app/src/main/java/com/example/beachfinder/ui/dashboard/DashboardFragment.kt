@@ -7,21 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.Constraints.TAG
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.beachfinder.DBHelper
-import com.example.beachfinder.Favorites
-import com.example.beachfinder.R
-import kotlinx.android.synthetic.main.detail_title.view.*
-import kotlinx.android.synthetic.main.text_row_item.*
+import com.example.beachfinder.*
 import kotlinx.android.synthetic.main.text_row_item.view.*
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,22 +32,6 @@ class BInfo {
     var blat:String = ""
     var blon:String = ""
 }
-
-/**
-* Provide views to RecyclerView with data from binfos.
-*/
-private var beach_id: String? = null
-private var sido_nm: String? = null
-private var gugun_nm: String? = null
-private var sta_nm: String? = null
-private var beach_wid: String? = null
-private var beach_len: String? = null
-private var beach_knd: String? = null
-private var link_addr: String? = null
-private var link_nm: String? = null
-private var link_tel: String? = null
-private var lat: String? = null
-private var lon: String? = null
 
 class DashboardFragment : Fragment() {
 
@@ -197,71 +172,62 @@ class DashboardFragment : Fragment() {
 
             binfos.add(binfo)
         }
-
-
-
     }
 
-    fun showReadDialog() {
 
-        val dialogReadView = layoutInflater.inflate(R.layout.detail_popup, null)
-        val title = layoutInflater.inflate(R.layout.detail_title, null)
-        title.title.text = "글읽기"
-
-        val builder = AlertDialog.Builder(context!!, android.R.style.Theme_Material_Light_NoActionBar)
-            .setView(dialogReadView)
-            .setCustomTitle(title)
-            .setPositiveButton("확인", null)
-            .setNeutralButton("닫기", null)
-            .create()
-
-
-        builder.setOnDismissListener {
-        }
-        builder.setOnShowListener {
-            val buttonPositive: Button = builder.getButton(AlertDialog.BUTTON_POSITIVE)
-            val buttonNeutral: Button = builder.getButton(AlertDialog.BUTTON_NEUTRAL)
-
-
-            buttonNeutral.setOnClickListener {
-
-            }
-
-            buttonPositive.setOnClickListener {
-
-            }
-        }
-        builder.show()
-    }
-
-    inner class FavRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class FavRecyclerViewAdapter : RecyclerView.Adapter<FavViewHolder>() {
 
         init {
             Log.d("FavRecylcerViewAdapter", "FavRecylcerViewAdapter init")
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder{
-
-            return CustomViewHolder(tTitle, tDetail )
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavViewHolder {
+            val view: View =layoutInflater.inflate(R.layout.text_row_item, parent,false)
+            return FavViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
 
-
-            binfos[position].let { item ->
-                with(holder) {
-                    tTitle.text = item.staNm
-                    tDetail.text = item.sidoNm
-                }
-            }
+            val item = binfos[position]
+            holder.setItems(item)
         }
 
         override fun getItemCount(): Int {
-            return 0
+            return binfos.size
         }
-        // RecyclerView Adapter - View Holder
-        inner class CustomViewHolder(var tTitle: TextView, var tDetail: TextView) : RecyclerView.ViewHolder(tTitle,tDetail)
+    }
 
+    inner class FavViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        fun setItems(item: BInfo) {
+
+            itemView.tTitle.text = item.staNm + " 해변"
+            itemView.tDetail.text = item.sidoNm + " " + item.staNm
+            //BeachDetails call
+            itemView.setOnClickListener{
+                val context = activity as AppCompatActivity
+                // Pass data to fragment
+                val fragment = BeachDetails()
+                val args = Bundle()
+                // Send string data as key value format
+                args.putString("pBeach_id", item.beachId)
+                args.putString("pSido_nm", item.sidoNm)
+                args.putString("pGugun_nm", item.gugunNm)
+                args.putString("pSta_nm", item.staNm)
+                args.putString("pBeach_wid", item.beachWid)
+                args.putString("pBeach_len", item.beachLen)
+                args.putString("pBeach_knd", item.beachKnd)
+                args.putString("pLink_addr", item.linkAddr)
+                args.putString("pLink_nm", item.linkNm)
+                args.putString("pLink_tel", item.linkTel)
+                args.putString("pLat", item.blat)
+                args.putString("pLon", item.blon)
+                fragment.arguments = args
+
+                context.replaceFragment(fragment)
+                Log.d("FavRecylcerViewAdapter", "클릭클릭2222")
+            }
+        }
     }
 
     override fun onStart() {

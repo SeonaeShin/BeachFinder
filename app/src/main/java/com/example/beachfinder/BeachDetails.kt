@@ -1,8 +1,6 @@
 package com.example.beachfinder
 
-import android.content.ContentValues
 import android.content.Context
-import android.content.SharedPreferences
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.util.Log
@@ -11,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.json.JSONException
-import org.json.JSONObject
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -38,9 +36,10 @@ class BeachDetails : Fragment() {
     private var param11: String? = null
     private var param12: String? = null
 
-
     lateinit var dbHelper : DBHelper
     lateinit var database : SQLiteDatabase
+
+    private var favItemYN: Boolean = false
 
     private lateinit var rootView: View
     val preference by lazy{ getActivity()?.getSharedPreferences("BeachFavorite", Context.MODE_MULTI_PROCESS)}
@@ -53,6 +52,8 @@ class BeachDetails : Fragment() {
         Log.d("beachdetail", "beachdetail")
         super.onCreate(savedInstanceState)
 
+
+
         //sql
         try {
             dbHelper = DBHelper(getActivity(), "newdb.db", null, 1)
@@ -60,6 +61,7 @@ class BeachDetails : Fragment() {
         } catch(e: JSONException) {
             Log.d("e: JSONException", "Error Occur")
         }
+
 
         arguments?.let {
 
@@ -78,6 +80,7 @@ class BeachDetails : Fragment() {
 
             Log.d("arguments in", "${param1}, ${param2},${param3}, ${param4},${param5}, ${param6},${param7}, ${param8},${param9}, ${param10},${param11}, ${param12}")
         }
+
         rootView = inflater.inflate(R.layout.fragment_beach_details, container, false)
 
         //title card
@@ -106,8 +109,14 @@ class BeachDetails : Fragment() {
 
         var buttonX   = rootView.findViewById<View>(R.id.buttonX) as Button
         var buttonFav = rootView.findViewById<View>(R.id.buttonFav) as Button
-        var buttonChk = rootView.findViewById<View>(R.id.buttonChk) as Button
-        var buttonFvRemove = rootView.findViewById<View>(R.id.buttonFvRemove) as Button
+
+        //즐겨찾기db에 속해있는지 확인
+        checkHaveFavItem()
+
+        //즐겨찾기db에 속해있다면 하트모양 변경
+        if(favItemYN){
+            buttonFav.setBackgroundResource(R.drawable.heart_full)
+        }
 
         //종료 버튼 눌렀을 때 핸들링
         buttonX.setOnClickListener{
@@ -119,40 +128,45 @@ class BeachDetails : Fragment() {
         //즐겨찾기 버튼 눌렀을 때 핸들링
         buttonFav.setOnClickListener{
         try{
+            //이미 즐겨찾기 상태 -> 즐겨찾기 삭
 //            var query = "INSERT INTO mytable('name', 'addr') values('${param1}', '${param2}');"
-            var query = "INSERT INTO mytable values('${param1}','${param2}','${param3}','${param4}','${param5}','${param6}','${param7}','${param8}','${param9}','${param10}','${param11}','${param12}');"
-            database.execSQL(query)
-        }
-        catch(e: Exception) {
-            Log.d("SQL Insert", "ok")
-        }
+            if(favItemYN) {
+                var arr : Array<String> = arrayOf("${param1}")
+                //인자가 여러개일땐 이런 방법으로
+//              database.delete("mytable","txt=? AND _id=?",arr)
+                database.delete("mytable","beach_id=?",arr)
+                buttonFav.setBackgroundResource(R.drawable.heart_empty)
+                favItemYN = false
 
-            numb++
+                Toast.makeText(activity, "즐겨찾기 삭제되었습니다!", Toast.LENGTH_SHORT).show()
+            //즐겨찾기 아닌 상태 -> 즐겨찾기 추가
+            } else {
+                var query =
+                    "INSERT INTO mytable values('${param1}','${param2}','${param3}','${param4}','${param5}','${param6}','${param7}','${param8}','${param9}','${param10}','${param11}','${param12}');"
+                database.execSQL(query)
+                buttonFav.setBackgroundResource(R.drawable.heart_full)
+                favItemYN = true
 
-        }
-
-        buttonChk.setOnClickListener{
-
-            var query = "SELECT * FROM mytable;"
-            var c = database.rawQuery(query,null)
-            while(c.moveToNext()){
-                Log.d("table>", c.getString(c.getColumnIndex("beach_id"))+", "+c.getString(c.getColumnIndex("sido_nm"))+", "
-                    +c.getString(c.getColumnIndex("gugun_nm"))+", "+c.getString(c.getColumnIndex("sta_nm"))+", "
-                        +c.getString(c.getColumnIndex("beach_wid"))+", "+c.getString(c.getColumnIndex("beach_len"))+", "
-                        +c.getString(c.getColumnIndex("beach_knd"))+", "+c.getString(c.getColumnIndex("link_addr"))+", "
-                        +c.getString(c.getColumnIndex("link_nm"))+", "+c.getString(c.getColumnIndex("link_tel"))+", "
-                        +c.getString(c.getColumnIndex("lat"))+", "+c.getString(c.getColumnIndex("lon")))
+                Toast.makeText(activity, "즐겨찾기 추가되었습니다!", Toast.LENGTH_SHORT).show()
             }
         }
-
-        buttonFvRemove.setOnClickListener{
-
-            var arr : Array<String> = arrayOf("${param1}")
-//          database.delete("mytable","txt=? AND _id=?",arr)
-            database.delete("mytable","beach_id=?",arr)
+        catch(e: Exception) {
+            Log.d("SQL Insert", "Not ok")
         }
-
+            numb++
+        }
         return rootView
+    }
+
+    //즐겨찾기db에 포함되어 있는지 확인하는 함수
+    fun checkHaveFavItem(){
+        var query = "SELECT * FROM mytable WHERE beach_id = ${param1};"
+        var c = database.rawQuery(query,null)
+
+        Log.d("checkHaveFavItem>", "${c.count}")
+
+        if(c.count >0) favItemYN = true
+
     }
 
     override fun onStart() {
@@ -177,4 +191,13 @@ class BeachDetails : Fragment() {
     }
 
 }
+
+//            즐겨찾기 전체 불러오는 방
+//            var query = "SELECT * FROM mytable;"
+//            var c = database.rawQuery(query,null)
+//            while(c.moveToNext()){
+//                Log.d("table>", c.getString(c.getColumnIndex("beach_id")))
+//            즐겨찾기 특정 로우 지우기
+//            var arr : Array<String> = arrayOf("${param1}")
+//            database.delete("mytable","beach_id=?",arr)
 
