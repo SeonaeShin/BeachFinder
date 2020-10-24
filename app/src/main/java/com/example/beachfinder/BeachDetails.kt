@@ -3,6 +3,7 @@ package com.example.beachfinder
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.text.util.Linkify
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import org.json.JSONException
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -52,8 +55,6 @@ class BeachDetails : Fragment() {
         Log.d("beachdetail", "beachdetail")
         super.onCreate(savedInstanceState)
 
-
-
         //sql
         try {
             dbHelper = DBHelper(getActivity(), "newdb.db", null, 1)
@@ -90,7 +91,6 @@ class BeachDetails : Fragment() {
         val txtWid: TextView = rootView.findViewById(R.id.txt_wid)
         val txtLen: TextView = rootView.findViewById(R.id.txt_len)
         val txtKnd: TextView = rootView.findViewById(R.id.txt_knd)
-        val txtLkAddr: TextView = rootView.findViewById(R.id.txt_addr)
         val txtLkNm: TextView = rootView.findViewById(R.id.txt_lknm)
         val txtLkTel: TextView = rootView.findViewById(R.id.txt_lktel)
         val txtLatLon: TextView = rootView.findViewById(R.id.txt_latlon)
@@ -98,13 +98,38 @@ class BeachDetails : Fragment() {
         //title card
         pName.setText(param4+" 해변")
         pAdd.setText(param2+" "+ param3)
+
         //detail card
-        if (param5 == "null")   txtWid.setText("정보없음") else txtWid.setText(param5)
-        if (param6 == "null")   txtLen.setText("정보없음") else txtLen.setText(param6)
+        if (param5 == "null")   txtWid.setText("정보없음") else txtWid.setText(param5 + "m")
+        if (param6 == "null")   txtLen.setText("정보없음") else txtLen.setText(param6 + "m")
         if (param7 == "null")   txtKnd.setText("정보없음") else txtKnd.setText(param7)
-        txtLkAddr.setText(param8)
+        //링크연결 추가
         txtLkNm.setText(param9)
-        txtLkTel.setText(param10)
+        //Transform 정의
+        val transform =
+            Linkify.TransformFilter(object : Linkify.TransformFilter, (Matcher, String) -> String {
+                override fun transformUrl(p0: Matcher?, p1: String?): String {
+                    return ""
+                }
+
+                override fun invoke(p1: Matcher, p2: String): String {
+                    return ""
+                }
+
+            })
+        //링크달 패턴 정의
+        val pattern1 = Pattern.compile(param9)
+
+        Linkify.addLinks(txtLkNm, pattern1, param8, null, transform)
+
+        //링크연 추가
+//      txtLkTel.setText(param10)
+        val str = param10
+        val arr = str?.split("(", ")")
+        println(arr)
+
+        txtLkTel.setText(arr?.get(1) + "\n("+arr?.get(0)+")")
+
         txtLatLon.setText("("+param11+", "+param12+")")
 
         var buttonX   = rootView.findViewById<View>(R.id.buttonX) as Button
@@ -119,7 +144,7 @@ class BeachDetails : Fragment() {
         }
 
         //종료 버튼 눌렀을 때 핸들링
-        buttonX.setOnClickListener{
+        buttonX.setOnClickListener {
             val context = activity as AppCompatActivity
 //            context.onBackPressed()
             context.finishFragment(this)

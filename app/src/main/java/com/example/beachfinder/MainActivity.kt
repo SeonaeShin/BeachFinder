@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 }
 
 
-
  //Extension function to replace fragment
 fun AppCompatActivity.replaceFragment(fragment: Fragment){
 //    val fragmentManager = supportFragmentManager

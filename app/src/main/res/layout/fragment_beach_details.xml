@@ -98,13 +98,14 @@
             android:layout_marginLeft="5sp">
 
             <TextView
-                android:id="@+id/txt_addr"
+                android:id="@+id/txt_lknm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt4"
                 app:layout_constraintStart_toEndOf="@+id/txt4"
                 app:layout_constraintTop_toTopOf="@+id/txt_wid" />
 
@@ -112,19 +113,21 @@
                 android:id="@+id/txt4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="100dp"
-                android:text="주소"
+                android:layout_marginStart="140dp"
+                android:text="홈페이지"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/txt_wid"
+                app:layout_constraintStart_toStartOf="@+id/txt1"
                 app:layout_constraintTop_toTopOf="@+id/txt1" />
 
             <TextView
                 android:id="@+id/txt_knd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt3"
                 app:layout_constraintStart_toEndOf="@+id/txt3"
                 app:layout_constraintTop_toTopOf="@+id/txt3" />
 
@@ -133,20 +136,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30sp"
-                android:layout_marginTop="48dp"
                 android:text="해변종류"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/txt_line2"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt2" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_line" />
 
             <TextView
-                android:id="@+id/txt_lktel"
+                android:id="@+id/txt_lktel1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt6"
                 app:layout_constraintStart_toEndOf="@+id/txt6"
                 app:layout_constraintTop_toTopOf="@+id/txt6" />
 
@@ -154,10 +158,10 @@
                 android:id="@+id/txt6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100sp"
-                android:text="해변담당전화"
+                android:layout_marginStart="140dp"
+                android:text="임시"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/txt_knd"
+                app:layout_constraintStart_toStartOf="@+id/txt3"
                 app:layout_constraintTop_toTopOf="@+id/txt3" />
 
             <TextView
@@ -166,8 +170,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30sp"
                 android:layout_marginTop="20sp"
+                android:layout_marginBottom="18dp"
                 android:text="폭"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/txt_line1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,23 +182,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
-                android:layout_marginTop="20sp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt1"
                 app:layout_constraintStart_toEndOf="@+id/txt1"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/txt1" />
 
             <TextView
                 android:id="@+id/txt7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginStart="30dp"
                 android:text="위도경도"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt3" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_line2" />
 
             <TextView
                 android:id="@+id/txt_latlon"
@@ -202,6 +208,7 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt7"
                 app:layout_constraintStart_toEndOf="@+id/txt7"
                 app:layout_constraintTop_toTopOf="@+id/txt7" />
 
@@ -209,22 +216,24 @@
                 android:id="@+id/txt5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="100sp"
-                android:text="링크이름"
+                android:layout_marginStart="140dp"
+                android:text="담당전화"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@+id/txt_len"
+                app:layout_constraintStart_toStartOf="@+id/txt2"
                 app:layout_constraintTop_toTopOf="@+id/txt2" />
 
             <TextView
-                android:id="@+id/txt_lknm"
+                android:id="@+id/txt_lktel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5sp"
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                android:autoLink="phone"
+                app:layout_constraintBottom_toBottomOf="@+id/txt5"
                 app:layout_constraintStart_toEndOf="@+id/txt5"
-                app:layout_constraintTop_toTopOf="@+id/txt_len" />
+                app:layout_constraintTop_toTopOf="@+id/txt5" />
 
             <TextView
                 android:id="@+id/txt_len"
@@ -234,6 +243,7 @@
                 android:text="TextView"
                 android:textSize="18sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/txt2"
                 app:layout_constraintStart_toEndOf="@+id/txt2"
                 app:layout_constraintTop_toTopOf="@+id/txt2" />
 
@@ -242,46 +252,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30sp"
-                android:layout_marginTop="40dp"
                 android:text="길이"
                 android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/txt_line"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt1" />
+                app:layout_constraintTop_toBottomOf="@+id/txt_line1" />
 
             <TextView
                 android:id="@+id/txt_line1"
                 android:layout_width="350dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="60dp"
                 android:background="#E1E1E1"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_wid" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txt_line"
                 android:layout_width="350dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="21dp"
+                android:layout_marginTop="120dp"
                 android:background="#E1E1E1"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.508"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt_len" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txt_line2"
                 android:layout_width="350dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="21dp"
+                android:layout_marginTop="180dp"
                 android:background="#E1E1E1"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.262"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txt3" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

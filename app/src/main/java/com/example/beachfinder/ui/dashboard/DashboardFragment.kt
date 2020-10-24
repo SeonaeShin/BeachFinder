@@ -47,14 +47,6 @@ class DashboardFragment : Fragment() {
     lateinit var dbHelper : DBHelper
     lateinit var database : SQLiteDatabase
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-//        initDataset()
-
-    }
-
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,11 +91,6 @@ class DashboardFragment : Fragment() {
         }
 
     }
-    //즐겨찾기 목록 불러오기
-    private fun initDataset() {
-        Log.d("initDataset", "initDataset in ok")
-        dataset2 = Array(DATASET_COUNT, {i -> "This is element # $i"})
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     private fun selectFavList() {
@@ -119,14 +106,12 @@ class DashboardFragment : Fragment() {
             Log.d("e: JSONException", "Error Occur")
         }
 
-        var index : Int = 0
         //전체 db 데이타 select
         var query = "SELECT * FROM mytable;"
-        var aJsonArray = JSONObject()
 
         var c = database.rawQuery(query,null)
         Log.d("db COunt", c.count.toString())
-        var binfo = BInfo()
+
         while(c.moveToNext()){
             //객체 정의
             var binfo = BInfo()
@@ -147,11 +132,9 @@ class DashboardFragment : Fragment() {
             if(isNull(c.getString(c.getColumnIndex("beach_wid")))) binfo.beachWid    = ""
             else binfo.beachWid  = c.getString(c.getColumnIndex("beach_wid")).toString()
 
-            Log.d("c.getString", c.getString(c.getColumnIndex("beach_len")))
             if(isNull(c.getString(c.getColumnIndex("beach_len")))) binfo.beachLen    = ""
             else binfo.beachLen  = c.getString(c.getColumnIndex("beach_len")).toString()
 
-            Log.d("c.getStringlink_knd", c.getString(c.getColumnIndex("beach_knd")).toString())
             if(isNull(c.getString(c.getColumnIndex("beach_knd")))) binfo.beachKnd    = ""
             else binfo.beachKnd  = c.getString(c.getColumnIndex("beach_knd")).toString()
 
@@ -174,9 +157,7 @@ class DashboardFragment : Fragment() {
         }
     }
 
-
     inner class FavRecyclerViewAdapter : RecyclerView.Adapter<FavViewHolder>() {
-
         init {
             Log.d("FavRecylcerViewAdapter", "FavRecylcerViewAdapter init")
         }
@@ -187,7 +168,6 @@ class DashboardFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: FavViewHolder, position: Int) {
-
             val item = binfos[position]
             holder.setItems(item)
         }
@@ -235,8 +215,12 @@ class DashboardFragment : Fragment() {
         super.onStart()
     }
 
-    companion object {
-        private val DATASET_COUNT = 10
+    @RequiresApi(Build.VERSION_CODES.N)
+    override fun onResume() {
+        Log.d("DashBoardfragment", "onResume")
+        super.onResume()
+        selectFavList()
+        recyclerView.adapter = FavRecyclerViewAdapter()
     }
 }
 
